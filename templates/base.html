@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja">
+    <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+        <!-- タイトル -->
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+
+    <!-- コンテンツ内容 -->
+    <body>
+		<div>
+			<h1 class="headding03 tcenter">あなたの声を世界の言葉に<br>- コンピュータによる同時通訳 -</h1>
+
+			<div class="box11">
+				<p>
+					「音声認識開始」ボタンを押してから，マイクに向かって話しかけてください．
+					「単語」よりも「文」で話しかけてもらった方が良い感じに翻訳されます．
+					例えば...
+					<ul>
+						<li>私は豊田高専のオープンキャンパスに行きました</li>
+						<li>ここ数年雨模様です</li>
+						<li>新型コロナウイルスの感染状況が早く落ち着くと良いと思っています</li>
+					</ul>
+					<span class="highlight"> どんな言葉でも結構です．お好きに話しかけ，音声認識，翻訳，音声合成を体験してみてください！！</span>
+					<br><br>
+				</p>
+			</div>
+
+			<div class="blueBox">
+			<!-- <a href="#" class="button rosy">Button</a> -->
+			<input type="button" value="音声認識開始" onclick="recognition3.start();" class="button rosy"/>
+			<input type="button" value="音声認識終了" onclick="recognition3.stop();" class="button rosy"/>
+			<P>
+				<div id="state3">「音声認識開始」をクリックしてください</div>
+			</P>
+			<P>
+				<div id="recognizedText3"></div>
+			<P>
+			</div>
+
+			<form method="POST" action="/result">
+				<input type="text" name="text" id="input">
+				<input type="submit" value="翻訳" id="trans" name="sub" class="button rosy">
+                <input type="submit" value="停止" id="stop" name="jump" class="button rosy" onClick="location.href'/'">
+			</form>
+
+			<div class="world" id="output">
+				<script>
+					var recognition3 = new webkitSpeechRecognition();
+					recognition3.lang = "ja-JP";
+					recognition3.interimResults = true;
+					recognition3.continuous = true;
+
+					var result;
+
+					recognition3.onstart = function() {
+						$("#state3").text("パソコンに向かって話しかけてください");
+						console.log('on start');
+					};
+					recognition3.onsoundstart = function() {
+						$("#state3").text("認識中");
+						console.log('onsoundstart');
+					};
+					recognition3.onnomatch = function() {
+						$("#recognizedText3").text("もう一度試してください");
+					};
+					recognition3.onerror= function() {
+						$("#recognizedText3").text("エラー");
+					};
+					recognition3.onsoundend = function() {
+						$("#state3").text("「音声認識開始」をクリックしてください");
+					};
+					recognition3.onend = function(){
+						$("#state3").text("「音声認識開始」をクリックしてください");
+					};
+					recognition3.onresult = function(event) {
+						var results = event.results;
+						for (var i = event.resultIndex; i < results.length; i++) {
+							if (results[i].isFinal) {
+								$("#recognizedText3").text(results[i][0].transcript);
+								result = results[i][0].transcript;
+								document.getElementById("input").value = result;
+								document.getElementById("en").click();
+							} else {
+								$("#recognizedText3").text(results[i][0].transcript);
+							}
+						}
+					};
+				</script>
+
+                {% block content %}
+                {% endblock %}
+
+            </div>
+            <script type="text/javascript" src="/static/js/hatenablog.com.js"></script>
+            <div id="copy">Copyright (C) <a href="/">Masaki MURATA</a>. All Rights Reserverd.</div>
+        </div>
+    </body>
+</html>

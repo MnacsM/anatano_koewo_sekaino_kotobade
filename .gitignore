@@ -1,0 +1,6 @@
+__pycache__
+.mypy_cache
+.venv
+www/
+www.zip
+.DS_Store

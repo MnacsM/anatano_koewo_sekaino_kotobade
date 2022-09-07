@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+{% block title %}あなたの声を世界の言葉に{% endblock %}
+
+{% block content %}
+                <!-- 翻訳出力 -->
+                <table border="0">
+                    <tr>
+                        <td width=64 height=150>
+                            <img src="/static/images/ja.png" alt="サンプル">
+                            <div class="tcenter">
+                                日本
+                            </div>
+                        </td>
+                        <td width=700px>
+                            <div class="triangle-border left tleft" id="ja">
+                                {{ input_text }}
+                            </div>
+                        </td>
+                        <td width=64 height=150>
+                            <img src="/static/images/en.png" alt="サンプル">
+                            <div class="tcenter">
+                                アメリカ
+                            </div>
+                        </td>
+                        <td width=700px>
+                            <div class="triangle-border left tleft" id="en">
+                                {{ trans_text0 }}
+                            </div>
+                        </td>
+                    </tr><tr>
+                        <td width=64 height=150>
+                            <img src="/static/images/de.png" alt="サンプル">
+                            <div class="tcenter">
+                                ドイツ
+                            </div>
+                        </td>
+                        <td width=700px>
+                            <div class="triangle-border left tleft" id="de" style="display: none;">
+                                {{ trans_text1 }}
+                            </div>
+                        </td>
+                        <td width=64 height=150>
+                            <img src="/static/images/es.png" alt="サンプル">
+                            <div class="tcenter">
+                                スペイン
+                            </div>
+                        </td>
+                        <td width=700px>
+                            <div class="triangle-border left tleft" id="es" style="display: none;">
+                                {{ trans_text2 }}
+                            </div>
+                        </td>
+                    </tr><tr>
+                        <td width=64 height=150>
+                            <img src="/static/images/fr.png" alt="サンプル">
+                            <div class="tcenter">
+                                フランス
+                            </div>
+                        </td>
+                        <td width=700px>
+                            <div class="triangle-border left tleft" id="fr" style="display: none;">
+                                {{ trans_text3 }}
+                            </div>
+                        </td>
+                        <td width=64 height=150>
+                            <img src="/static/images/it.png" alt="サンプル">
+                            <div class="tcenter">
+                                イタリア
+                            </div>
+                        </td>
+                        <td width=700px>
+                            <div class="triangle-border left tleft" id="it" style="display: none;">
+                                {{ trans_text4 }}
+                            </div>
+                        </td>
+                    </tr><tr>
+                        <td width=64 height=150>
+                            <img src="/static/images/ko.png" alt="サンプル">
+                            <div class="tcenter">
+                                韓国
+                            </div>
+                        </td>
+                        <td width=700px>
+                            <div class="triangle-border left tleft" id="ko" style="display: none;">
+                                {{ trans_text5 }}
+                            </div>
+                        </td>
+                        <td width=64 height=150>
+                            <img src="/static/images/zh-chs.png" alt="サンプル">
+                            <div class="tcenter">
+                                中国
+                            </div>
+                        </td>
+                        <td width=700px>
+                            <div class="triangle-border left tleft" id="zh-chs" style="display: none;">
+                                {{ trans_text6 }}
+                            </div>
+                        </td>
+                    </tr><tr>
+                        <td width=64 height=150>
+                            <img src="/static/images/ru.png" alt="サンプル">
+                            <div class="tcenter">
+                                ロシア
+                            </div>
+                        </td>
+                        <td width=700px>
+                            <div class="triangle-border left tleft" id="ru" style="display: none;">
+                                {{ trans_text7 }}
+                            </div>
+                        </td>
+                        <td width=64 height=150>
+                            <img src="/static/images/th.png" alt="サンプル">
+                            <div class="tcenter">
+                                タイ
+                            </div>
+                        </td>
+                        <td width=700px>
+                            <div class="triangle-border left tleft" id="th" style="display: none;">
+                                {{ trans_text8 }}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- 音声合成 -->
+                    <tr>
+                        <script>
+                            var msg = new SpeechSynthesisUtterance();
+                            var voices = window.speechSynthesis.getVoices();
+
+                            // debug用
+                            if (voices.length == 0){
+                                console.log('error');
+                                // なんか不具合があるので，２回voicesを取得
+                                voices = window.speechSynthesis.getVoices();
+                                voices.forEach(function(v, i) {
+                                    console.log(i, v.name, v.lang);
+                                });
+                            }
+
+                            msg.voiceURI = 'Kyoko';
+                            msg.volume = 1;
+                            msg.rate = 1;
+                            msg.pitch = 1;
+                            msg.lang = "ja-JP";
+                            msg.text = "{{ input_text }}";
+                            console.log(msg);
+                            // 日本語の合成（不要）
+                            // speechSynthesis.speak(msg);
+
+                            // アメリカ
+                            var msg = new SpeechSynthesisUtterance();
+                            msg.voiceURI = 'Fred'
+                            msg.volume = 1;
+                            msg.rate = 1;
+                            msg.pitch = 1;
+                            msg.lang = "en-US"
+                            msg.text = "{{ trans_text0 }}"
+                            console.log(msg);
+                            speechSynthesis.speak(msg);
+
+                            // ドイツ
+                            msg.onend = function (e) {
+                                document.getElementById("de").style.display="block";
+                            };
+
+                            var msg = new SpeechSynthesisUtterance();
+                            msg.voiceURI = 'Anna'
+                            msg.volume = 1;
+                            msg.rate = 1;
+                            msg.pitch = 1;
+                            msg.lang = "de-DE"
+                            msg.text = "{{ trans_text1 }}"
+                            console.log(msg);
+                            speechSynthesis.speak(msg);
+
+                            // スペイン
+                            msg.onend = function (e) {
+                                document.getElementById("es").style.display="block";
+                            };
+
+                            var msg = new SpeechSynthesisUtterance();
+                            msg.voiceURI = 'Jorge'
+                            msg.volume = 1;
+                            msg.rate = 1;
+                            msg.pitch = 1;
+                            msg.lang = "es-ES"
+                            msg.text = "{{ trans_text2 }}"
+                            console.log(msg);
+                            speechSynthesis.speak(msg);
+
+                            // フランス
+                            msg.onend = function (e) {
+                                document.getElementById("fr").style.display="block";
+                            };
+
+                            var msg = new SpeechSynthesisUtterance();
+                            msg.voiceURI = 'Thomas'
+                            msg.volume = 1;
+                            msg.rate = 1;
+                            msg.pitch = 1;
+                            msg.lang = "fr-FR"
+                            msg.text = "{{ trans_text3 }}"
+                            console.log(msg);
+                            speechSynthesis.speak(msg);
+
+                            // イタリア
+                            msg.onend = function (e) {
+                                document.getElementById("it").style.display="block";
+                            };
+
+                            var msg = new SpeechSynthesisUtterance();
+                            msg.voiceURI = 'Alice'
+                            msg.volume = 1;
+                            msg.rate = 1;
+                            msg.pitch = 1;
+                            msg.lang = "it-IT"
+                            msg.text = "{{ trans_text4 }}"
+                            console.log(msg);
+                            speechSynthesis.speak(msg);
+
+                            // 韓国
+                            msg.onend = function (e) {
+                                document.getElementById("ko").style.display="block";
+                            };
+
+                            var msg = new SpeechSynthesisUtterance();
+                            msg.voiceURI = 'Yuna'
+                            msg.volume = 1;
+                            msg.rate = 1;
+                            msg.pitch = 1;
+                            msg.lang = "ko-KR"
+                            msg.text = "{{ trans_text5 }}"
+                            console.log(msg);
+                            speechSynthesis.speak(msg);
+
+                            // 中国
+                            msg.onend = function (e) {
+                                document.getElementById("zh-chs").style.display="block";
+                            };
+
+                            var msg = new SpeechSynthesisUtterance();
+                            msg.voiceURI = 'Ting-Ting'
+                            msg.volume = 1;
+                            msg.rate = 1;
+                            msg.pitch = 1;
+                            msg.lang = "zh-CN"
+                            msg.text = "{{ trans_text6 }}"
+                            console.log(msg);
+                            speechSynthesis.speak(msg);
+
+                            // ロシア
+                            msg.onend = function (e) {
+                                document.getElementById("ru").style.display="block";
+                            };
+
+                            var msg = new SpeechSynthesisUtterance();
+                            msg.voiceURI = 'Yuri'
+                            msg.volume = 1;
+                            msg.rate = 1;
+                            msg.pitch = 1;
+                            msg.lang = "ru-RU"
+                            msg.text = "{{ trans_text7 }}"
+                            console.log(msg);
+                            speechSynthesis.speak(msg);
+
+                            // タイ
+                            msg.onend = function (e) {
+                                document.getElementById("th").style.display="block";
+                            };
+
+                            var msg = new SpeechSynthesisUtterance();
+                            msg.voiceURI = 'Kanya'
+                            msg.volume = 1;
+                            msg.rate = 1;
+                            msg.pitch = 1;
+                            msg.lang = "th-TH"
+                            msg.text = "{{ trans_text8 }}"
+                            console.log(msg);
+                            speechSynthesis.speak(msg);
+
+                        </script>
+                    </tr>
+                </table>
+{% endblock %}
