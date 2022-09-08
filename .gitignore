@@ -4,3 +4,4 @@ __pycache__
 www/
 www.zip
 .DS_Store
+.env

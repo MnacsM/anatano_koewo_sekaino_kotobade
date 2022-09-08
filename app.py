@@ -4,12 +4,14 @@ import requests
 from flask import Flask  # Flaskと、HTMLをレンダリングするrender_templateをインポート
 from flask import render_template, request
 
+import settings
+
 app = Flask(__name__)  # Flask の起動
 
 
 def microsoft_translator(input, source, target):
     # Add your subscription key and endpoint
-    subscription_key = "YOUR API KEY"
+    subscription_key = settings.AP  # YOUR API KEY
     endpoint = "https://api.cognitive.microsofttranslator.com"
 
     # Add your location, also known as region. The default is global.
@@ -96,5 +98,4 @@ def result():
 
 
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=50000)  # ローカルホスト50000番でサーバーを立てる
     app.run(debug=True)
