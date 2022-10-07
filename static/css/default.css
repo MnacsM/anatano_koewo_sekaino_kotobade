@@ -39,7 +39,7 @@
 .world{
     /* width:1600px; height:811px; padding:15px; */
     width:1800px; height:1350px; padding:15px;
-    background-image: url(map1.jpg);
+    background-image: url(map.jpg);
     background-repeat: no-repeat;
     background-size:contain;
 }
