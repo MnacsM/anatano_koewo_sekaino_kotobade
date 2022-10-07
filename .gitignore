@@ -5,3 +5,4 @@ www/
 www.zip
 .DS_Store
 .env
+openssl/
